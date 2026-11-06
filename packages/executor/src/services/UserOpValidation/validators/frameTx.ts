@@ -307,7 +307,9 @@ export class FrameTxValidationService {
     }
     collector.pass(EXPLORER_RULES.PREFIX);
 
-    const structural = validateStructuralRules(tx, prefix);
+    // Every entity gets the unstaked ERC-8421 BUDGET-010 budget here, since
+    // stakes are not resolved yet at this point.
+    const structural = validateStructuralRules(tx, prefix, () => false);
     if (!structural.valid) {
       throw collector.failed(
         EXPLORER_RULES.STRUCTURE,
